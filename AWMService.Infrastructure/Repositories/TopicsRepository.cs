@@ -50,8 +50,9 @@ namespace AWMService.Infrastructure.Repositories
         public async Task AddTopicAsync(int directionId,
             string? titleKz, string? titleRu, string? titleEn,
             string? description,
-            int supervisorId,
+                        int supervisorId,
             int statusId,
+            int periodId,
             int maxParticipants,
             int actorUserId,
             CancellationToken ct)
@@ -69,9 +70,10 @@ namespace AWMService.Infrastructure.Repositories
                 TitleRu = titleRu,
                 TitleEn = titleEn,
                 Description = description,
-                MaxParticipants = maxParticipants > 0 ? maxParticipants : 1,
+                                MaxParticipants = maxParticipants > 0 ? maxParticipants : 1,
                 SupervisorId = supervisorId,
                 StatusId = statusId,
+                PeriodId = periodId,
                 CreatedOn = now,
                 CreatedBy = actorUserId,
                 ModifiedBy = null,
@@ -88,7 +90,8 @@ namespace AWMService.Infrastructure.Repositories
         public async Task UpdateTopicAsync(int id, int? directionId,
             string? titleKz, string? titleRu, string? titleEn,
             string? description,
-            int? supervisorId,
+                        int? supervisorId,
+            int? periodId,
             int? maxParticipants,
             int actorUserId,
             CancellationToken ct)
@@ -99,6 +102,7 @@ namespace AWMService.Infrastructure.Repositories
 
             if(directionId is not null) entity.DirectionId = directionId.Value;
             if (supervisorId is not null) entity.SupervisorId = supervisorId.Value;
+            if (periodId.HasValue) entity.PeriodId = periodId.Value;
             if (maxParticipants is not null && maxParticipants.Value > 0) entity.MaxParticipants = maxParticipants.Value;
             if (titleKz is not null) entity.TitleKz = titleKz.Trim();
             if (titleRu is not null) entity.TitleRu =  titleRu.Trim();

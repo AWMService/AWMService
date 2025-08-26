@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using AWMService.Infrastructure.Hubs;
 using Serilog;
 using AWMService.WebAPI.Middleware;
+using AWMService.WebAPI.Filters;
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(new ConfigurationBuilder()
@@ -27,7 +28,14 @@ try
     builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
     builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
-    builder.Services.AddControllers();
+    // Регистрация ValidateModelFilter для использования с [ServiceFilter] (опционально, если используется глобально)
+    builder.Services.AddScoped<ValidateModelFilter>();
+
+    builder.Services.AddControllers(options =>
+    {
+        // Глобальное добавление фильтра для автоматической валидации ModelState
+        options.Filters.Add<ValidateModelFilter>();
+    });
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
 

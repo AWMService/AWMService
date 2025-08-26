@@ -24,8 +24,7 @@ namespace AWMService.WebAPI.Controllers
         [HasPermission("manage_permissions")]
         public async Task<IActionResult> AssignPermission(int roleId, int permissionId, CancellationToken ct)
         {
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(userIdClaim, out var actorUserId))
+            if (!TryGetUserId(out var actorUserId))
             {
                 return Unauthorized();
             }
@@ -51,8 +50,7 @@ namespace AWMService.WebAPI.Controllers
         [HasPermission("manage_permissions")]
         public async Task<IActionResult> RevokePermission(int roleId, int permissionId, CancellationToken ct)
         {
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(userIdClaim, out var actorUserId))
+            if (!TryGetUserId(out var actorUserId))
             {
                 return Unauthorized();
             }
@@ -78,8 +76,7 @@ namespace AWMService.WebAPI.Controllers
         [HasPermission("manage_user_roles")]
         public async Task<IActionResult> AssignRoleToUser(int roleId, int userId, CancellationToken ct)
         {
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(userIdClaim, out var actorUserId))
+            if (!TryGetUserId(out var actorUserId))
             {
                 return Unauthorized();
             }
@@ -105,8 +102,7 @@ namespace AWMService.WebAPI.Controllers
         [HasPermission("manage_user_roles")]
         public async Task<IActionResult> RevokeRoleFromUser(int roleId, int userId, CancellationToken ct)
         {
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(userIdClaim, out var actorUserId))
+            if (!TryGetUserId(out var actorUserId))
             {
                 return Unauthorized();
             }

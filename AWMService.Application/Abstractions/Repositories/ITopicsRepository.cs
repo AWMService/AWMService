@@ -1,4 +1,4 @@
-﻿using AWMService.Domain.Entities;
+using AWMService.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +18,7 @@ namespace AWMService.Application.Abstractions.Repositories
             string? description,
             int supervisorId,
             int statusId,
+            int periodId,
             int maxParticipants,
             int actorUserId,
             CancellationToken ct);
@@ -26,6 +27,7 @@ namespace AWMService.Application.Abstractions.Repositories
             string? titleKz, string? titleRu, string? titleEn,
             string? description,
             int? supervisorId,
+            int? periodId,
             int? maxParticipants,
             int actorUserId,
             CancellationToken ct);

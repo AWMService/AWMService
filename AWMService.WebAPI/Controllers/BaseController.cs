@@ -1,4 +1,5 @@
-﻿using AWMService.Domain.Constants;
+﻿using System.Security.Claims;
+using AWMService.Domain.Constants;
 using KDS.Primitives.FluentResult;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,18 @@ namespace AWMService.WebAPI.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
+        [NonAction]
+        protected bool TryGetUserId(out int userId)
+        {
+            userId = 0;
+            var userIdClaim = User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out userId))
+            {
+                return false;
+            }
+            return true;
+        }
+
         [NonAction]
         public IActionResult GenerateProblemResponse(Error error)
         {

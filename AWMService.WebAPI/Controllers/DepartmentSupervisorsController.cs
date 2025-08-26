@@ -54,8 +54,7 @@ namespace AWMService.WebAPI.Controllers
         {
             _logger.LogInformation("ApproveBulk endpoint triggered.");
 
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(userIdClaim, out var actorUserId))
+            if (!TryGetUserId(out var actorUserId))
             {
                 _logger.LogWarning("ApproveBulk failed: Could not parse user ID from claims.");
                 return Unauthorized();
@@ -78,8 +77,7 @@ namespace AWMService.WebAPI.Controllers
         {
             _logger.LogInformation("RevokeBulk endpoint triggered.");
 
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(userIdClaim, out var actorUserId))
+            if (!TryGetUserId(out var actorUserId))
             {
                 _logger.LogWarning("RevokeBulk failed: Could not parse user ID from claims.");
                 return Unauthorized();

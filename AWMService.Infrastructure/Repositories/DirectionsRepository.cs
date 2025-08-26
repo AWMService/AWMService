@@ -38,7 +38,7 @@ namespace AWMService.Infrastructure.Repositories
                 .ToListAsync(ct);
         }
 
-        public async Task AddDirectionAsync(string nameKz, string nameRu, string nameEn, string description, int supervisorId, int statusId, int actorUserId,
+        public async Task AddDirectionAsync(string nameKz, string nameRu, string nameEn, string description, int supervisorId, int statusId, int periodId, int actorUserId,
             CancellationToken ct)
         {
             if(string.IsNullOrWhiteSpace(nameKz) &
@@ -55,6 +55,7 @@ namespace AWMService.Infrastructure.Repositories
                 Description = description,
                 SupervisorId = supervisorId,
                 StatusId = statusId,
+                PeriodId = periodId,
                 CreatedBy = actorUserId,
                 CreatedOn = now,
                 ModifiedBy = null,
@@ -69,15 +70,16 @@ namespace AWMService.Infrastructure.Repositories
         }
 
 
-        public async Task UpdateDirectionAsync(int id, string nameKz, string nameRu, string nameEn, string description, int actorUserId, CancellationToken ct)
+        public async Task UpdateDirectionAsync(int id, string nameKz, string nameRu, string nameEn, string description, int? periodId, int actorUserId, CancellationToken ct)
         {
             var entity = await _context.Set<Directions>()
                 .FirstOrDefaultAsync(d => d.Id == id && !d.IsDeleted, ct) ?? throw new KeyNotFoundException($"Direction #{id} not found.");
 
             if (nameKz is not null) entity.NameKz = string.IsNullOrWhiteSpace(nameKz) ? null : nameKz.Trim();
             if (nameRu is not null) entity.NameRu = string.IsNullOrWhiteSpace(nameRu) ? null : nameRu.Trim();
-            if (nameEn is not null) entity.NameEn = string.IsNullOrWhiteSpace(nameEn) ? null : nameEn.Trim();
+                        if (nameEn is not null) entity.NameEn = string.IsNullOrWhiteSpace(nameEn) ? null : nameEn.Trim();
             if (description is not null) entity.Description = string.IsNullOrWhiteSpace(description) ? null : description.Trim();
+            if (periodId.HasValue) entity.PeriodId = periodId.Value;
 
             entity.ModifiedBy = actorUserId;
             entity.ModifiedOn = DateTime.UtcNow;

@@ -69,8 +69,7 @@ namespace AWMService.WebAPI.Controllers
         [Authorize]
         public async Task<IActionResult> Logout(CancellationToken ct)
         {
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(userIdClaim, out var userId))
+            if (!TryGetUserId(out var userId))
             {
                 _logger.LogWarning("Logout failed: Could not parse user ID from claims.");
                 return Unauthorized();

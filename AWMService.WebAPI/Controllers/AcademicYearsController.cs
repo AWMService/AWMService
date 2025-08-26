@@ -76,8 +76,7 @@ namespace AWMService.WebAPI.Controllers
         {
             _logger.LogInformation("Add AcademicYear endpoint triggered.");
 
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(userIdClaim, out var actorUserId))
+            if (!TryGetUserId(out var actorUserId))
             {
                 _logger.LogWarning("Add AcademicYear failed: Could not parse user ID from claims.");
                 return Unauthorized();
@@ -99,8 +98,7 @@ namespace AWMService.WebAPI.Controllers
         {
             _logger.LogInformation("Delete AcademicYear endpoint triggered for Id={Id}.", id);
 
-            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(userIdClaim, out var actorUserId))
+            if (!TryGetUserId(out var actorUserId))
             {
                 _logger.LogWarning("Delete AcademicYear failed: Could not parse user ID from claims.");
                 return Unauthorized();
